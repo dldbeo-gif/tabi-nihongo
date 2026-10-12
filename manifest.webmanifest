@@ -1,0 +1,12 @@
+{
+  "name": "타비니혼고 - 일본 여행 일본어",
+  "short_name": "타비니혼고",
+  "description": "일본 여행 메뉴·간판·회화를 하루 15분 학습",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f8f5",
+  "theme_color": "#193f38",
+  "lang": "ko",
+  "icons": []
+}
