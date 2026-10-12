@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#193f38">
+<meta name="description" content="일본 여행 메뉴·간판·회화를 하루 15분 연습하는 일본어 학습 앱">
+<link rel="manifest" href="manifest.webmanifest">
+<title>타비니혼고 | 여행 일본어</title>
+<style>
+:root{--green:#193f38;--mint:#e1eee5;--paper:#f7f8f5;--ink:#202722;--muted:#68736b;--line:#e1e6e1;--white:#fff;--gold:#f7edda}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;line-height:1.5}
+button,input,textarea{font:inherit}button{cursor:pointer;border:0;border-radius:14px;padding:12px 15px;font-weight:700}
+.app{max-width:760px;margin:0 auto;min-height:100vh;padding-bottom:84px}
+header{background:var(--green);color:#fff;padding:22px 18px 20px;border-radius:0 0 24px 24px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-size:13px;color:#d5e9d7;letter-spacing:.08em}.streak{font-size:12px;background:#315b50;padding:7px 10px;border-radius:999px}
+h1{font-size:25px;line-height:1.25;margin:12px 0 7px}header p{margin:0;color:#e3eee7;font-size:14px}
+.progressline{height:7px;background:#315b50;border-radius:99px;overflow:hidden;margin-top:18px}.progressline span{display:block;height:100%;background:#a7d7b6;width:0}
+main{padding:16px;display:grid;gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:0 3px 12px #1c382708}
+h2{font-size:18px;margin:0 0 10px}h3{font-size:16px;margin:0}.muted{color:var(--muted);font-size:13px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{background:#edf3ee;color:#2e5945;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px}.tab{background:#315b50;color:#eaf4ed;font-size:12px;padding:10px 3px}.tab.active{background:#fff;color:var(--green)}
+.primary{background:var(--green);color:#fff}.secondary{background:#edf3ee;color:#244d3b}.outline{background:#fff;border:1px solid var(--line);color:var(--ink)}.danger{background:#fae9e7;color:#943e37}.wide{width:100%}
+.bigkanji{font-size:46px;font-weight:800;text-align:center;margin:4px 0}.reading{text-align:center;font-size:20px;color:#2b684c;font-weight:800}.meaning{text-align:center;font-size:20px;font-weight:800;margin:3px 0 12px}.example{background:#f3f6f2;border-radius:14px;padding:12px;margin-top:12px}.example strong{font-size:20px}.example p{margin:3px 0}
+.answer{display:grid;gap:8px}.option{background:#fff;border:1px solid var(--line);text-align:left}.option.selected{border:2px solid var(--green);background:#f0f7f1}.option.correct{border:2px solid #33825a;background:#e8f6ec}.option.wrong{border:2px solid #b94b42;background:#fff0ee}
+.menu-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.menu-item{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}.menu-item .jp{font-size:22px;font-weight:800}.menu-item .kana{color:#2d6c4e;font-size:13px}.menu-item .ko{font-size:14px;font-weight:700}
+input[type=file]{width:100%;padding:12px;background:#f5f7f4;border:1px dashed #aab7ad;border-radius:12px}
+textarea{width:100%;min-height:85px;border:1px solid var(--line);border-radius:12px;padding:12px;resize:vertical}
+#ocrText{margin-top:10px;white-space:pre-wrap;word-break:break-word;background:#f6f7f4;border-radius:12px;padding:12px;min-height:42px}
+.bottomnav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:5}
+.bottominner{width:100%;max-width:760px;display:grid;grid-template-columns:repeat(4,1fr);padding:8px 8px max(8px,env(safe-area-inset-bottom));gap:4px}
+.navbtn{background:transparent;color:var(--muted);font-size:11px;padding:8px 2px}.navbtn b{display:block;font-size:18px}.navbtn.active{color:var(--green);background:var(--mint)}
+.hidden{display:none!important}.notice{background:#fff7e8;border:1px solid #f0dfbb;padding:11px;border-radius:12px;font-size:13px}
+small{color:var(--muted)}.score{font-size:26px;font-weight:900;color:var(--green)}.divider{height:1px;background:var(--line);margin:12px 0}
+@media(min-width:600px){main{padding:22px}.menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="top"><div class="brand">旅する日本語 · TABI NIHONGO</div><div class="streak" id="streak">오늘도 15분 도전</div></div>
+  <h1>일본 여행, 이제 직접 읽고 말하기</h1>
+  <p>메뉴 · 간판 · 일상회화 — 하루 15분</p>
+  <div class="progressline"><span id="overallBar"></span></div>
+  <div class="row" style="margin-top:7px;font-size:12px;color:#d5e9d7"><span>오늘 학습 진행</span><span id="overallLabel">0분 / 15분</span></div>
+  <div class="tabs">
+    <button class="tab active" data-tab="learn">오늘 학습</button>
+    <button class="tab" data-tab="menu">메뉴 도감</button>
+    <button class="tab" data-tab="camera">사진 읽기</button>
+    <button class="tab" data-tab="review">복습</button>
+  </div>
+</header>
+<main>
+<section id="view-learn" class="view">
+  <div class="card">
+    <div class="row"><div><span class="chip">DAY 01 · 식당 메뉴</span><h2 style="margin-top:10px">오늘의 단어 카드</h2></div><div class="muted" id="cardCount">1 / 8</div></div>
+    <p class="muted">먼저 한자를 보고 뜻을 떠올려 봐. 버튼을 누르면 발음과 예문을 확인할 수 있어.</p>
+    <div class="bigkanji" id="wordKanji">定食</div><div id="wordReading" class="reading hidden">ていしょく</div><div id="wordMeaning" class="meaning hidden">정식</div>
+    <div id="wordParts" class="muted hidden" style="text-align:center"></div>
+    <div class="example hidden" id="wordExample"><strong id="exampleJp"></strong><p id="exampleKana"></p><p id="exampleKo"></p></div>
+    <div class="row" style="margin-top:15px"><button id="speakWord" class="secondary">🔊 발음 듣기</button><button id="revealWord" class="primary">뜻·발음 보기</button></div>
+    <div class="row" style="margin-top:9px"><button id="markKnown" class="outline" style="flex:1">✓ 알고 있어요</button><button id="markWrong" class="outline" style="flex:1">↻ 다시 복습</button></div>
+    <div class="row" style="margin-top:9px"><button id="prevWord" class="outline">← 이전</button><button id="nextWord" class="primary">다음 단어 →</button></div>
+  </div>
+  <div class="card">
+    <div class="row"><h2>실전 메뉴 한 줄 읽기</h2><span class="chip">읽기 연습</span></div>
+    <div class="bigkanji" style="font-size:29px">焼き魚定食</div>
+    <div class="reading">やきざかな ていしょく</div>
+    <p style="text-align:center;font-weight:700">생선구이 정식</p>
+    <div class="notice">읽는 순서: 焼き魚(생선구이) + 定食(정식). 한자를 모두 몰라도 자주 나오는 조합부터 익히면 돼.</div>
+    <button id="speakMenu" class="secondary wide" style="margin-top:12px">🔊 메뉴 발음 듣기</button>
+  </div>
+  <div class="card">
+    <div class="row"><h2>3문제 미니 테스트</h2><span class="muted" id="quizProgress">문제 1 / 3</span></div>
+    <h3 id="quizQuestion" style="font-size:22px;margin:12px 0 3px">定食</h3><p class="muted" id="quizKana">ていしょく</p>
+    <div class="answer" id="quizOptions"></div>
+    <div id="quizFeedback" class="notice hidden" style="margin-top:10px"></div>
+    <button id="quizNext" class="primary wide hidden" style="margin-top:10px">다음 문제</button>
+  </div>
+</section>
+<section id="view-menu" class="view hidden">
+  <div class="card"><h2>여행 메뉴·간판 도감</h2><p class="muted">검색하거나 카드의 발음을 눌러 들어 봐.</p><input id="searchWords" placeholder="예: 곱빼기, 出口, 회 검색" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;margin-bottom:12px"><div class="menu-grid" id="dictionary"></div></div>
+  <div class="card"><h2>간판에서 자주 보는 한자</h2><div class="menu-grid" id="signs"></div></div>
+</section>
+<section id="view-camera" class="view hidden">
+  <div class="card"><h2>📷 사진으로 메뉴 읽기</h2><p class="muted">일본어 메뉴판을 촬영하거나 사진을 선택하면 글자를 추출해 뜻을 찾아볼 수 있어.</p>
+    <input id="imageInput" type="file" accept="image/*" capture="environment">
+    <div id="imagePreviewWrap" class="hidden" style="margin-top:12px"><img id="imagePreview" alt="선택한 메뉴판" style="width:100%;border-radius:12px;max-height:300px;object-fit:contain"></div>
+    <button id="ocrButton" class="primary wide" style="margin-top:12px" disabled>일본어 글자 인식하기</button>
+    <div id="ocrStatus" class="muted" style="margin-top:8px">사진을 선택해 줘. OCR은 첫 실행 시 인터넷 연결이 필요해.</div>
+    <div id="ocrText" class="hidden"></div>
+    <button id="lookupOcr" class="secondary wide hidden" style="margin-top:8px">인식한 글자에서 아는 단어 찾기</button>
+    <div id="ocrMatches" style="margin-top:10px"></div>
+    <div class="divider"></div><h3>인식이 잘 안 될 때</h3><p class="muted">사진을 밝게 찍고 메뉴판을 정면에서 촬영해 줘. 인식 결과가 부정확하면 아래에 일본어를 직접 붙여 넣어 뜻을 검색할 수 있어.</p>
+    <textarea id="manualText" placeholder="예: お持ち帰りできますか？"></textarea><button id="manualLookup" class="secondary wide" style="margin-top:8px">입력한 글자 뜻 찾기</button><div id="manualResult"></div>
+  </div>
+</section>
+<section id="view-review" class="view hidden">
+  <div class="card"><div class="row"><h2>복습할 단어</h2><span class="chip" id="reviewCount">0개</span></div><p class="muted">‘다시 복습’을 누른 단어가 여기에 저장돼. 이 기기의 브라우저에 진도가 보관돼.</p><div id="reviewList"></div><button id="clearReview" class="outline wide" style="margin-top:10px">복습 목록 비우기</button></div>
+  <div class="card"><h2>내 학습 기록</h2><div class="row"><div><div class="score" id="learnedCount">0</div><small>익힌 단어</small></div><div><div class="score" id="reviewedCount">0</div><small>복습 단어</small></div><div><div class="score" id="quizBest">—</div><small>퀴즈 최고점</small></div></div><div class="divider"></div><p class="muted">진도는 같은 브라우저에 저장돼. 브라우저 데이터 삭제 또는 다른 기기 사용 시 초기화될 수 있어.</p><button id="resetAll" class="danger wide">전체 진도 초기화</button></div>
+</section>
+</main>
+</div>
+<nav class="bottomnav"><div class="bottominner">
+<button class="navbtn active" data-tab="learn"><b>📚</b>학습</button><button class="navbtn" data-tab="menu"><b>🍱</b>도감</button><button class="navbtn" data-tab="camera"><b>📷</b>사진 읽기</button><button class="navbtn" data-tab="review"><b>🔁</b>복습</button>
+</div></nav>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+<script>
+const words=[
+{jp:"定食",kana:"ていしょく",ko:"정식",parts:"定(정할 정) + 食(먹을 식)",ex:"焼き魚定食",exkana:"やきざかな ていしょく",exko:"생선구이 정식"},
+{jp:"焼き",kana:"やき",ko:"구이",parts:"焼(구울 소)",ex:"焼き鳥",exkana:"やきとり",exko:"닭꼬치 구이"},
+{jp:"刺身",kana:"さしみ",ko:"회",parts:"刺(찌를 자) + 身(몸 신)",ex:"刺身盛り合わせ",exkana:"さしみ もりあわせ",exko:"모둠회"},
+{jp:"大盛り",kana:"おおもり",ko:"곱빼기·많은 양",parts:"大(큰 대) + 盛(담을 성)",ex:"ご飯大盛り",exkana:"ごはん おおもり",exko:"밥 곱빼기"},
+{jp:"持ち帰り",kana:"もちかえり",ko:"포장·테이크아웃",parts:"持(가질 지) + 帰(돌아갈 귀)",ex:"持ち帰りできますか？",exkana:"もちかえり できますか？",exko:"포장할 수 있나요?"},
+{jp:"入口",kana:"いりぐち",ko:"입구",parts:"入(들 입) + 口(입 구)",ex:"入口はこちらです",exkana:"いりぐちは こちらです",exko:"입구는 이쪽입니다"},
+{jp:"出口",kana:"でぐち",ko:"출구",parts:"出(날 출) + 口(입 구)",ex:"出口はどこですか？",exkana:"でぐちは どこですか",exko:"출구는 어디인가요?"},
+{jp:"駅",kana:"えき",ko:"역",parts:"역을 뜻하는 한자",ex:"駅はどこですか？",exkana:"えきは どこですか",exko:"역은 어디인가요?"},
+{jp:"会計",kana:"かいけい",ko:"계산",parts:"会(모일 회) + 計(셀 계)",ex:"お会計お願いします",exkana:"おかいけい おねがいします",exko:"계산 부탁합니다"},
+{jp:"予約",kana:"よやく",ko:"예약",parts:"予(미리 예) + 約(맺을 약)",ex:"予約しています",exkana:"よやくしています",exko:"예약했습니다"},
+{jp:"生",kana:"なま",ko:"날것·생",parts:"문맥에 따라 읽기와 뜻이 달라짐",ex:"生ビール",exkana:"なまびーる",exko:"생맥주"},
+{jp:"揚げ",kana:"あげ",ko:"튀김",parts:"揚(날릴 양)",ex:"唐揚げ",exkana:"からあげ",exko:"일본식 닭튀김"},
+{jp:"煮",kana:"に",ko:"조림·끓임",parts:"煮(삶을 자)",ex:"煮魚",exkana:"にざかな",exko:"생선조림"},
+{jp:"改札",kana:"かいさつ",ko:"개찰구",parts:"改(고칠 개) + 札(패 찰)",ex:"改札口",exkana:"かいさつぐち",exko:"개찰구"}
+];
+const quizData=[
+{idx:0,opts:["정식","회","곱빼기","포장"],a:"정식",hint:"밥과 반찬 등이 함께 나오는 한 상 차림"},
+{idx:2,opts:["생선구이","회","튀김","계산"],a:"회",hint:"刺身는 얇게 썬 생선 등 날음식"},
+{idx:3,opts:["보통 양","곱빼기","포장","예약"],a:"곱빼기",hint:"大는 크다, 盛り는 담은 양을 뜻해요."}
+];
+const signs=[words[5],words[6],words[7],words[13],words[8],words[9]];
+const defaultState={index:0,revealed:false,known:[],review:[],quizBest:0,quizDone:{},quizScore:0,quizIndex:0,quizAnswered:false,minutes:0,lastDay:""};
+let state;
+try{state={...defaultState,...JSON.parse(localStorage.getItem("tabiNihongoState")||"{}")}}catch(e){state={...defaultState}}
+function save(){localStorage.setItem("tabiNihongoState",JSON.stringify(state));renderStats()}
+function speak(text){if(!("speechSynthesis" in window)){alert("이 브라우저는 음성 재생을 지원하지 않아.");return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=.82;speechSynthesis.speak(u)}
+function setTab(tab){document.querySelectorAll(".view").forEach(e=>e.classList.add("hidden"));document.getElementById("view-"+tab).classList.remove("hidden");document.querySelectorAll("[data-tab]").forEach(e=>e.classList.toggle("active",e.dataset.tab===tab));if(tab==="menu")renderDictionary();if(tab==="review")renderReview();window.scrollTo({top:0,behavior:"smooth"})}
+document.querySelectorAll("[data-tab]").forEach(e=>e.addEventListener("click",()=>setTab(e.dataset.tab)));
+function renderWord(){const w=words[state.index%words.length];document.getElementById("cardCount").textContent=(state.index%words.length+1)+" / "+words.length;document.getElementById("wordKanji").textContent=w.jp;["wordReading","wordMeaning","wordParts","wordExample"].forEach(id=>document.getElementById(id).classList.toggle("hidden",!state.revealed));document.getElementById("wordReading").textContent=w.kana;document.getElementById("wordMeaning").textContent=w.ko;document.getElementById("wordParts").textContent=w.parts;document.getElementById("exampleJp").textContent=w.ex;document.getElementById("exampleKana").textContent=w.exkana;document.getElementById("exampleKo").textContent=w.exko;document.getElementById("revealWord").textContent=state.revealed?"뜻·발음 확인됨":"뜻·발음 보기"}
+document.getElementById("revealWord").onclick=()=>{state.revealed=!state.revealed;if(state.revealed){state.minutes=Math.min(15,(state.minutes||0)+2)}save();renderWord()};
+document.getElementById("speakWord").onclick=()=>speak(words[state.index%words.length].kana);
+document.getElementById("speakMenu").onclick=()=>speak("やきざかな ていしょく");
+document.getElementById("nextWord").onclick=()=>{state.index=(state.index+1)%words.length;state.revealed=false;state.minutes=Math.min(15,(state.minutes||0)+1);save();renderWord()};
+document.getElementById("prevWord").onclick=()=>{state.index=(state.index+words.length-1)%words.length;state.revealed=false;save();renderWord()};
+document.getElementById("markKnown").onclick=()=>{const jp=words[state.index%words.length].jp;if(!state.known.includes(jp))state.known.push(jp);state.review=state.review.filter(x=>x!==jp);state.minutes=Math.min(15,(state.minutes||0)+1);save();renderWord();renderReview();alert("익힌 단어로 저장했어!")};
+document.getElementById("markWrong").onclick=()=>{const jp=words[state.index%words.length].jp;if(!state.review.includes(jp))state.review.push(jp);save();renderReview();alert("복습 목록에 저장했어.")};
+function renderDictionary(){const q=(document.getElementById("searchWords").value||"").trim().toLowerCase();const list=words.filter(w=>!q||[w.jp,w.kana,w.ko,w.ex].join(" ").toLowerCase().includes(q));document.getElementById("dictionary").innerHTML=list.map(w=>`<div class="menu-item"><div class="jp">${w.jp}</div><div class="kana">${w.kana}</div><div class="ko">${w.ko}</div><button class="secondary" style="padding:7px 9px;margin-top:8px" onclick="speak('${w.kana.replace(/'/g,"")}')">🔊 듣기</button><div class="muted" style="margin-top:6px">${w.ex} · ${w.exko}</div></div>`).join("")||'<p class="muted">검색 결과가 없어.</p>';document.getElementById("signs").innerHTML=signs.map(w=>`<div class="menu-item"><div class="jp">${w.jp}</div><div class="kana">${w.kana}</div><div class="ko">${w.ko}</div><button class="secondary" style="padding:7px 9px;margin-top:8px" onclick="speak('${w.kana}')">🔊 듣기</button></div>`).join("")}
+document.getElementById("searchWords").addEventListener("input",renderDictionary);
+function renderQuiz(){const q=quizData[state.quizIndex%quizData.length],w=words[q.idx];document.getElementById("quizProgress").textContent="문제 "+(state.quizIndex+1)+" / "+quizData.length;document.getElementById("quizQuestion").textContent=w.jp;document.getElementById("quizKana").textContent=w.kana;document.getElementById("quizFeedback").classList.add("hidden");document.getElementById("quizNext").classList.add("hidden");document.getElementById("quizOptions").innerHTML=q.opts.map(o=>`<button class="option" data-opt="${o}">${o}</button>`).join("");document.querySelectorAll("[data-opt]").forEach(b=>b.onclick=()=>{if(state.quizAnswered)return;state.quizAnswered=true;const correct=b.dataset.opt===q.a;if(correct)state.quizScore++;document.querySelectorAll("[data-opt]").forEach(x=>{x.disabled=true;if(x.dataset.opt===q.a)x.classList.add("correct");else if(x===b)x.classList.add("wrong")});const f=document.getElementById("quizFeedback");f.textContent=(correct?"정답이에요! ":"아쉬워요. 정답은 "+q.a+". ")+q.hint;f.classList.remove("hidden");document.getElementById("quizNext").classList.remove("hidden");save()})}
+document.getElementById("quizNext").onclick=()=>{if(state.quizIndex===quizData.length-1){state.quizBest=Math.max(state.quizBest,state.quizScore);alert("테스트 완료! "+state.quizScore+" / "+quizData.length+"점");state.quizIndex=0;state.quizScore=0}else state.quizIndex++;state.quizAnswered=false;state.minutes=Math.min(15,(state.minutes||0)+2);save();renderQuiz()};
+function renderReview(){const el=document.getElementById("reviewList");document.getElementById("reviewCount").textContent=state.review.length+"개";el.innerHTML=state.review.map(jp=>{const w=words.find(x=>x.jp===jp);if(!w)return "";return `<div class="row" style="padding:11px 0;border-bottom:1px solid var(--line)"><div><strong style="font-size:20px">${w.jp}</strong><div class="muted">${w.kana} · ${w.ko}</div></div><button class="secondary" onclick="speak('${w.kana}')">🔊 듣기</button><button class="outline" onclick="removeReview('${w.jp}')">완료</button></div>`}).join("")||'<p class="muted">아직 복습할 단어가 없어. 카드에서 ‘다시 복습’을 눌러 추가해 봐.</p>'}
+window.removeReview=(jp)=>{state.review=state.review.filter(x=>x!==jp);save();renderReview()};
+document.getElementById("clearReview").onclick=()=>{if(confirm("복습 목록을 비울까?")){state.review=[];save();renderReview()}};
+document.getElementById("resetAll").onclick=()=>{if(confirm("학습 진도와 복습 목록을 모두 초기화할까?")){state={...defaultState};save();renderWord();renderQuiz();renderReview();alert("초기화했어.")}};
+function renderStats(){document.getElementById("learnedCount").textContent=state.known.length;document.getElementById("reviewedCount").textContent=state.review.length;document.getElementById("quizBest").textContent=state.quizBest?state.quizBest+"/3":"—";document.getElementById("overallBar").style.width=Math.min(100,(state.minutes||0)/15*100)+"%";document.getElementById("overallLabel").textContent=Math.min(15,state.minutes||0)+"분 / 15분";document.getElementById("streak").textContent=state.known.length+"개 단어 익힘"}
+const imageInput=document.getElementById("imageInput");let selectedImage=null;
+imageInput.onchange=()=>{selectedImage=imageInput.files[0];if(selectedImage){document.getElementById("imagePreview").src=URL.createObjectURL(selectedImage);document.getElementById("imagePreviewWrap").classList.remove("hidden");document.getElementById("ocrButton").disabled=false;document.getElementById("ocrStatus").textContent="사진을 준비했어. 일본어 글자 인식을 눌러 줘."}};
+document.getElementById("ocrButton").onclick=async()=>{if(!selectedImage)return;const status=document.getElementById("ocrStatus"),out=document.getElementById("ocrText");if(!window.Tesseract){status.textContent="OCR 모듈을 불러오지 못했어. 인터넷 연결을 확인하거나 아래에 글자를 직접 입력해 줘.";return}document.getElementById("ocrButton").disabled=true;status.textContent="일본어 글자를 인식하고 있어. 첫 실행은 언어 데이터를 받아오느라 시간이 걸릴 수 있어.";try{const result=await Tesseract.recognize(selectedImage,"jpn",{logger:m=>{if(m.status)status.textContent=m.status+(m.progress?" "+Math.round(m.progress*100)+"%":"")}});out.textContent=result.data.text||"글자를 찾지 못했어. 사진을 더 선명하게 찍어 봐.";out.classList.remove("hidden");document.getElementById("lookupOcr").classList.remove("hidden");status.textContent="인식 완료. 결과를 확인해 줘."}catch(e){status.textContent="인식에 실패했어. 인터넷 연결을 확인하거나 글자를 직접 입력해 줘."}finally{document.getElementById("ocrButton").disabled=false}};
+function findMatches(txt){const found=words.filter(w=>txt.includes(w.jp)||txt.includes(w.kana)||txt.includes(w.ex));return found.map(w=>`<div class="menu-item" style="margin-bottom:8px"><strong style="font-size:20px">${w.jp}</strong> <span class="kana">${w.kana}</span><div>${w.ko}</div><small>예: ${w.ex} — ${w.exko}</small><button class="secondary" onclick="speak('${w.kana}')">🔊 듣기</button></div>`).join("")||'<p class="muted">도감에 있는 단어와 일치하지 않아. 아직 배우지 않은 단어일 수 있어.</p>'}
+document.getElementById("lookupOcr").onclick=()=>document.getElementById("ocrMatches").innerHTML=findMatches(document.getElementById("ocrText").textContent);
+document.getElementById("manualLookup").onclick=()=>document.getElementById("manualResult").innerHTML=findMatches(document.getElementById("manualText").value);
+const today=new Date().toISOString().slice(0,10);if(state.lastDay!==today){state.lastDay=today;state.minutes=0;save()}
+renderWord();renderQuiz();renderStats();renderDictionary();renderReview();
+if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{});
+</script>
+</body>
+</html>
