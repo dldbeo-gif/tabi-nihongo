@@ -18,7 +18,7 @@ h1{font-size:25px;line-height:1.25;margin:12px 0 7px}header p{margin:0;color:#e3
 .progressline{height:7px;background:#315b50;border-radius:99px;overflow:hidden;margin-top:18px}.progressline span{display:block;height:100%;background:#a7d7b6;width:0}
 main{padding:16px;display:grid;gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:17px;box-shadow:0 3px 12px #1c382708}
 h2{font-size:18px;margin:0 0 10px}h3{font-size:16px;margin:0}.muted{color:var(--muted);font-size:13px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{background:#edf3ee;color:#2e5945;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700}
-.tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;margin-top:14px}.tab{background:#315b50;color:#eaf4ed;font-size:11px;padding:10px 2px}.tab.active{background:#fff;color:var(--green)}
+.tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;margin-top:14px}.tab{background:#315b50;color:#eaf4ed;font-size:10px;padding:10px 1px}.tab.active{background:#fff;color:var(--green)}
 .primary{background:var(--green);color:#fff}.secondary{background:#edf3ee;color:#244d3b}.outline{background:#fff;border:1px solid var(--line);color:var(--ink)}.danger{background:#fae9e7;color:#943e37}.wide{width:100%}
 .bigkanji{font-size:46px;font-weight:800;text-align:center;margin:4px 0}.reading{text-align:center;font-size:20px;color:#2b684c;font-weight:800}.meaning{text-align:center;font-size:20px;font-weight:800;margin:3px 0 12px}.example{background:#f3f6f2;border-radius:14px;padding:12px;margin-top:12px}.example strong{font-size:20px}.example p{margin:3px 0}
 .answer{display:grid;gap:8px}.option{background:#fff;border:1px solid var(--line);text-align:left}.option.selected{border:2px solid var(--green);background:#f0f7f1}.option.correct{border:2px solid #33825a;background:#e8f6ec}.option.wrong{border:2px solid #b94b42;background:#fff0ee}
@@ -27,7 +27,7 @@ input[type=file]{width:100%;padding:12px;background:#f5f7f4;border:1px dashed #a
 textarea{width:100%;min-height:85px;border:1px solid var(--line);border-radius:12px;padding:12px;resize:vertical}
 #ocrText{margin-top:10px;white-space:pre-wrap;word-break:break-word;background:#f6f7f4;border-radius:12px;padding:12px;min-height:42px}
 .bottomnav{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:5}
-.bottominner{width:100%;max-width:760px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));padding:8px 8px max(8px,env(safe-area-inset-bottom));gap:4px}
+.bottominner{width:100%;max-width:760px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));padding:8px 8px max(8px,env(safe-area-inset-bottom));gap:4px}
 .navbtn{background:transparent;color:var(--muted);font-size:11px;padding:8px 2px}.navbtn b{display:block;font-size:18px}.navbtn.active{color:var(--green);background:var(--mint)}
 .hidden{display:none!important}.notice{background:#fff7e8;border:1px solid #f0dfbb;padding:11px;border-radius:12px;font-size:13px}
 small{color:var(--muted)}.score{font-size:26px;font-weight:900;color:var(--green)}.divider{height:1px;background:var(--line);margin:12px 0}
@@ -48,6 +48,7 @@ small{color:var(--muted)}.score{font-size:26px;font-weight:900;color:var(--green
     <button class="tab" data-tab="camera">사진 읽기</button>
     <button class="tab" data-tab="review">복습</button>
     <button class="tab" data-tab="kana">かな표</button>
+    <button class="tab" data-tab="jpop">J-POP</button>
   </div>
 </header>
 <main>
@@ -99,6 +100,11 @@ small{color:var(--muted)}.score{font-size:26px;font-weight:900;color:var(--green
   <div class="card"><div class="row"><h2>복습할 단어</h2><span class="chip" id="reviewCount">0개</span></div><p class="muted">‘다시 복습’을 누른 단어가 여기에 저장돼. 이 기기의 브라우저에 진도가 보관돼.</p><div id="reviewList"></div><button id="clearReview" class="outline wide" style="margin-top:10px">복습 목록 비우기</button></div>
   <div class="card"><h2>내 학습 기록</h2><div class="row"><div><div class="score" id="learnedCount">0</div><small>익힌 단어</small></div><div><div class="score" id="reviewedCount">0</div><small>복습 단어</small></div><div><div class="score" id="quizBest">—</div><small>퀴즈 최고점</small></div></div><div class="divider"></div><p class="muted">진도는 같은 브라우저에 저장돼. 브라우저 데이터 삭제 또는 다른 기기 사용 시 초기화될 수 있어.</p><button id="resetAll" class="danger wide">전체 진도 초기화</button></div>
 </section>
+<section id="view-jpop" class="view hidden">
+  <div class="card"><h2>🎧 J-POP 일본어 학습</h2><p class="muted">한국 공연으로 알려진 아티스트와 인기곡을 중심으로 정리했어. 노래 재생은 없어. 저작권이 있는 곡의 전체 가사를 무단으로 싣는 대신, 곡별 학습 포인트와 핵심 표현을 공부할 수 있어.</p><input id="jpopSearch" placeholder="가수 또는 곡 검색 (예: 바운디, 怪獣の花唄)" style="width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;margin:10px 0 12px"><div id="jpopList" class="menu-grid"></div></div>
+  <div class="card"><h2 id="jpopDetailTitle">곡을 선택해 줘</h2><div id="jpopDetail" class="muted">위 목록에서 곡을 누르면 추천 학습 포인트와 관련 일본어 표현이 나와.</div></div>
+  <div class="notice">가사 전문이 필요하면 사용자가 제공한 가사를 바탕으로 번역·히라가나·로마자·단어 풀이를 정리할 수 있어. 앱에는 노래나 음원이 포함되지 않아.</div>
+</section>
 <section id="view-kana" class="view hidden">
   <div class="card"><h2>히라가나 · ひらがな</h2><p class="muted">일본어 발음을 적는 기본 문자예요. 각 글자 아래 로마자 발음도 함께 표시했어.</p><div id="hiraganaChart" class="kana-table-wrap"></div></div>
   <div class="card"><h2>가타카나 · カタカナ</h2><p class="muted">외래어, 외국인 이름, 메뉴의 외국어 표기에서 자주 보여요.</p><div id="katakanaChart" class="kana-table-wrap"></div></div>
@@ -108,7 +114,7 @@ small{color:var(--muted)}.score{font-size:26px;font-weight:900;color:var(--green
 </main>
 </div>
 <nav class="bottomnav"><div class="bottominner">
-<button class="navbtn active" data-tab="learn"><b>📚</b>학습</button><button class="navbtn" data-tab="menu"><b>🍱</b>도감</button><button class="navbtn" data-tab="camera"><b>📷</b>사진 읽기</button><button class="navbtn" data-tab="review"><b>🔁</b>복습</button><button class="navbtn" data-tab="kana"><b>あ</b>가나표</button>
+<button class="navbtn active" data-tab="learn"><b>📚</b>학습</button><button class="navbtn" data-tab="menu"><b>🍱</b>도감</button><button class="navbtn" data-tab="camera"><b>📷</b>사진 읽기</button><button class="navbtn" data-tab="review"><b>🔁</b>복습</button><button class="navbtn" data-tab="kana"><b>あ</b>가나표</button><button class="navbtn" data-tab="jpop"><b>🎧</b>J-POP</button>
 </div></nav>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script>
@@ -152,7 +158,24 @@ let state;
 try{state={...defaultState,...JSON.parse(localStorage.getItem("tabiNihongoState")||"{}")}}catch(e){state={...defaultState}}
 function save(){localStorage.setItem("tabiNihongoState",JSON.stringify(state));renderStats()}
 function speak(text){if(!("speechSynthesis" in window)){alert("이 브라우저는 음성 재생을 지원하지 않아.");return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang="ja-JP";u.rate=.82;speechSynthesis.speak(u)}
-function setTab(tab){document.querySelectorAll(".view").forEach(e=>e.classList.add("hidden"));document.getElementById("view-"+tab).classList.remove("hidden");document.querySelectorAll("[data-tab]").forEach(e=>e.classList.toggle("active",e.dataset.tab===tab));if(tab==="menu")renderDictionary();if(tab==="review")renderReview();if(tab==="kana")renderKanaCharts();window.scrollTo({top:0,behavior:"smooth"})}
+const jpopSongs=[
+ {artist:'Vaundy (바운디)',song:'怪獣の花唄',reading:'かいじゅうのはなうた',genre:'에너지 있는 록 팝',focus:'노래 속 감정과 기억을 나타내는 표현, 동사 과거형을 공부하기 좋아.',words:[['怪獣','かいじゅう','kaijuu','괴수'],['花唄','はなうた','hanauta','콧노래·흥얼거리는 노래']],phrase:'忘れない',kana:'わすれない',romaji:'wasurenai',meaning:'잊지 않아 / 잊지 않을 거야',grammar:'동사 忘れる(잊다)의 부정형 忘れない.'},
+ {artist:'Vaundy (바운디)',song:'踊り子',reading:'おどりこ',genre:'미드템포 팝',focus:'관계와 감정을 암시하는 표현, 동사 활용에 귀 기울여 봐.',words:[['踊り子','おどりこ','odoriko','무용수'],['踊る','おどる','odoru','춤추다']],phrase:'会いたい',kana:'あいたい',romaji:'aitai',meaning:'만나고 싶어',grammar:'동사 会う(만나다)의 ます형 어간에 たい를 붙이면 “~하고 싶다”.'},
+ {artist:'優里 (유우리)',song:'ドライフラワー',reading:'どらいふらわー',genre:'발라드',focus:'이별·감정 어휘와 과거의 일을 말하는 표현을 공부하기 좋아.',words:[['花','はな','hana','꽃'],['思い出','おもいで','omoide','추억']],phrase:'大丈夫',kana:'だいじょうぶ',romaji:'daijoubu',meaning:'괜찮아',grammar:'상태를 확인하거나 상대를 안심시킬 때 자주 쓰는 표현.'},
+ {artist:'優里 (유우리)',song:'ベテルギウス',reading:'べてるぎうす',genre:'드라마틱한 발라드',focus:'별·빛 같은 비유 표현과 감정을 담은 문장을 익혀 봐.',words:[['星','ほし','hoshi','별'],['光','ひかり','hikari','빛']],phrase:'信じている',kana:'しんじている',romaji:'shinjite iru',meaning:'믿고 있어',grammar:'동사 ている형은 진행 중인 동작이나 지속되는 상태를 나타내.'},
+ {artist:'あいみょん (아이묭)',song:'マリーゴールド',reading:'まりーごーるど',genre:'어쿠스틱 팝',focus:'일상적인 단어와 자연스러운 말투를 공부하기 좋아.',words:[['夏','なつ','natsu','여름'],['風','かぜ','kaze','바람']],phrase:'好きだよ',kana:'すきだよ',romaji:'suki da yo',meaning:'좋아해',grammar:'好き(좋아함)에 だよ를 붙이면 친근하고 단정적인 말투가 돼.'},
+ {artist:'あいみょん (아이묭)',song:'君はロックを聴かない',reading:'きみはろっくをきかない',genre:'기타 팝',focus:'조사 は·を와 동사 부정형을 확인하기 좋아.',words:[['君','きみ','kimi','너'],['聴く','きく','kiku','듣다']],phrase:'聴かない',kana:'きかない',romaji:'kikanai',meaning:'듣지 않아',grammar:'동사 聴く의 부정형. う동사는 어미를 あ단으로 바꾸고 ない를 붙여.'},
+ {artist:'Mrs. GREEN APPLE (미세스 그린 애플)',song:'青と夏',reading:'あおとなつ',genre:'청량한 록 팝',focus:'계절·색깔 어휘와 청춘을 표현하는 말을 배워 봐.',words:[['青','あお','ao','파랑·푸름'],['夏','なつ','natsu','여름']],phrase:'新しい',kana:'あたらしい',romaji:'atarashii',meaning:'새로운',grammar:'い형용사는 명사를 바로 꾸밀 수 있어: 新しい本(새 책).'},
+ {artist:'Mrs. GREEN APPLE (미세스 그린 애플)',song:'ケセラセラ',reading:'けせらせら',genre:'밝은 팝 록',focus:'스스로를 격려하는 말과 긍정적인 형용사를 공부하기 좋아.',words:[['明日','あした','ashita','내일'],['自分','じぶん','jibun','자기 자신']],phrase:'頑張って',kana:'がんばって',romaji:'ganbatte',meaning:'힘내 / 열심히 해',grammar:'頑張る의 て형. 응원할 때 자주 쓰며 상황에 따라 부담스럽게 들릴 수도 있어.'},
+ {artist:'YOASOBI',song:'夜に駆ける',reading:'よるにかける',genre:'빠른 템포의 팝',focus:'빠른 발음과 동사 활용을 나누어 공부해 봐.',words:[['夜','よる','yoru','밤'],['駆ける','かける','kakeru','달리다·내달리다']],phrase:'今でも',kana:'いまでも',romaji:'ima demo',meaning:'지금도',grammar:'でも는 문맥에 따라 “~도 여전히”라는 의미를 더해.'},
+ {artist:'藤井風 (후지이 카제)',song:'きらり',reading:'きらり',genre:'그루브 팝',focus:'자연스러운 발음과 일상적인 동사·형용사를 들어 봐.',words:[['光る','ひかる','hikaru','빛나다'],['道','みち','michi','길']],phrase:'そのまま',kana:'そのまま',romaji:'sono mama',meaning:'그대로',grammar:'상태나 방식을 바꾸지 않는다는 뜻으로 자주 쓰여.'},
+ {artist:'米津玄師 (요네즈 켄시)',song:'Lemon',reading:'れもん',genre:'감성 팝',focus:'기억과 감정을 표현하는 명사·형용사에 집중해 봐.',words:[['夢','ゆめ','yume','꿈'],['記憶','きおく','kioku','기억']],phrase:'忘れない',kana:'わすれない',romaji:'wasurenai',meaning:'잊지 않아',grammar:'동사 忘れる의 부정형.'},
+ {artist:'Ado',song:'新時代',reading:'しんじだい',genre:'강한 보컬의 팝',focus:'힘 있는 발음, 강조 표현과 외래어를 살펴봐.',words:[['新時代','しんじだい','shinjidai','새로운 시대'],['世界','せかい','sekai','세계']],phrase:'世界',kana:'せかい',romaji:'sekai',meaning:'세계',grammar:'한자 단어는 자주 나오는 조합을 통째로 익히면 읽기 쉬워.'}
+];
+function renderJpop(filter=''){const host=document.getElementById('jpopList');if(!host)return;const q=filter.trim().toLowerCase();const list=jpopSongs.filter(x=>(x.artist+' '+x.song+' '+x.reading).toLowerCase().includes(q));host.innerHTML=list.map((x)=>`<button class="menu-item" style="text-align:left" data-jpop-song="${jpopSongs.indexOf(x)}"><div class="jp">${x.song}</div><div class="kana">${x.reading} · ${toRomaji(x.reading)}</div><div class="ko">${x.artist}</div><small>${x.genre}</small></button>`).join('')||'<p class="muted">검색 결과가 없어. 가수명이나 곡명을 다시 입력해 줘.</p>';host.querySelectorAll('[data-jpop-song]').forEach(b=>b.addEventListener('click',()=>showJpop(Number(b.dataset.jpopSong))));}
+function showJpop(i){const x=jpopSongs[i];document.getElementById('jpopDetailTitle').textContent=x.artist+' · '+x.song;document.getElementById('jpopDetail').innerHTML=`<p><strong>읽기:</strong> ${x.reading} · ${toRomaji(x.reading)}</p><p><strong>학습 포인트:</strong> ${x.focus}</p><h3 style="margin:12px 0 6px">핵심 단어</h3>${x.words.map(w=>`<div class="example" style="margin:6px 0"><strong>${w[0]}</strong> <span class="reading" style="font-size:15px">${w[1]}</span><p>${w[2]} · ${w[3]}</p></div>`).join('')}<h3 style="margin:12px 0 6px">관련 표현 예시</h3><div class="example"><strong>${x.phrase}</strong><p>${x.kana} · ${x.romaji}</p><p><b>뜻:</b> ${x.meaning}</p><p><b>문법:</b> ${x.grammar}</p><button class="secondary" onclick="speak(${JSON.stringify(x.kana)})">🔊 발음 듣기</button></div><p class="muted" style="margin-top:10px">이 표현 예시는 학습용 표현이며, 해당 곡의 전체 가사를 표시한 것이 아니야.</p>`;document.getElementById('jpopDetail').scrollIntoView({behavior:'smooth',block:'nearest'});}
+document.getElementById('jpopSearch')?.addEventListener('input',e=>renderJpop(e.target.value));
+function setTab(tab){document.querySelectorAll(".view").forEach(e=>e.classList.add("hidden"));document.getElementById("view-"+tab).classList.remove("hidden");document.querySelectorAll("[data-tab]").forEach(e=>e.classList.toggle("active",e.dataset.tab===tab));if(tab==="menu")renderDictionary();if(tab==="review")renderReview();if(tab==="kana")renderKanaCharts();if(tab==="jpop")renderJpop(document.getElementById("jpopSearch")?.value||"");window.scrollTo({top:0,behavior:"smooth"})}
 document.querySelectorAll("[data-tab]").forEach(e=>e.addEventListener("click",()=>setTab(e.dataset.tab)));
 function renderWord(){const w=words[state.index%words.length];document.getElementById("cardCount").textContent=(state.index%words.length+1)+" / "+words.length;document.getElementById("wordKanji").textContent=w.jp;["wordReading","wordRomaji","wordMeaning","wordParts","wordExample"].forEach(id=>document.getElementById(id).classList.toggle("hidden",!state.revealed));document.getElementById("wordReading").textContent=w.kana;document.getElementById("wordRomaji").textContent=toRomaji(w.kana);document.getElementById("wordMeaning").textContent=w.ko;document.getElementById("wordParts").textContent=w.parts;document.getElementById("exampleJp").textContent=w.ex;document.getElementById("exampleKana").textContent=w.exkana;document.getElementById("exampleKo").textContent=w.exko;document.getElementById("revealWord").textContent=state.revealed?"뜻·발음 확인됨":"뜻·발음 보기"}
 document.getElementById("revealWord").onclick=()=>{state.revealed=!state.revealed;if(state.revealed){state.minutes=Math.min(15,(state.minutes||0)+2)}save();renderWord()};
