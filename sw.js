@@ -1,4 +1,4 @@
-const CACHE_NAME = "tabi-nihongo-v2";
+const CACHE_NAME = "tabi-nihongo-v3";
 const CORE = ["./", "./index.html", "./manifest.webmanifest"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(CORE)).catch(()=>{}));
